@@ -21,6 +21,7 @@ import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.client.indices.GetIndexResponse;
+import org.elasticsearch.client.sniff.*;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -251,5 +252,24 @@ public class crudOp {
         System.out.println("更新状态：" + update.status());
         System.out.println(update);
 
+    }
+
+    public void sniffer() throws IOException {
+
+        // sniffer监听器
+        SniffOnFailureListener sniffOnFailureListener = new SniffOnFailureListener();
+
+        // 创建客户端（sniffer在Low-level REST client中）如果在High-level中使用的话，可以使用highClient.getLowLevelClient()获取的Low-level的client
+        RestClient restClient = RestClient.builder(new HttpHost("server01", 9200, "http")).setFailureListener(sniffOnFailureListener).build();
+
+        NodesSniffer nodesSniffer = new ElasticsearchNodesSniffer(restClient, ElasticsearchNodesSniffer.DEFAULT_SNIFF_REQUEST_TIMEOUT, ElasticsearchNodesSniffer.Scheme.HTTPS);
+        Sniffer sniffer = Sniffer.builder(restClient).setSniffIntervalMillis(5000) //没隔多久嗅探一次，默认5分钟，这里设置为5秒
+                .setSniffAfterFailureDelayMillis(30000) // 嗅探失败的时候，间隔多久后再次触发嗅探，直到正常
+                .setNodesSniffer(nodesSniffer).build();
+
+        sniffOnFailureListener.setSniffer(sniffer);
+
+        sniffer.close();
+        restClient.close();
     }
 }

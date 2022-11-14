@@ -11,6 +11,7 @@
     <modules>
         <module>redis</module>
         <module>elasticsearch</module>
+        <module>clickhouse</module>
     </modules>
 
     <name>middleware</name>
@@ -26,6 +27,10 @@
         <elasticsearch.version>7.10.1</elasticsearch.version>
         <elasticsearch.high.version>7.10.1</elasticsearch.high.version>
         <elasticsearch.sniffer.version>7.10.1</elasticsearch.sniffer.version>
+        <spark.version>2.3.1</spark.version>
+        <clickhouse-jdbc.version>0.2.4</clickhouse-jdbc.version>
+        <!--<flink.version>1.9.1</flink.version>-->
+        <flink.version>1.11.3</flink.version>
         <gson.version>2.8.5</gson.version>
     </properties>
     <dependencyManagement>
@@ -50,6 +55,85 @@
                 <artifactId>elasticsearch-rest-client-sniffer</artifactId>
                 <version>${elasticsearch.sniffer.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.spark</groupId>
+                <artifactId>spark-core_2.11</artifactId>
+                <version>${spark.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.spark</groupId>
+                <artifactId>spark-sql_2.11</artifactId>
+                <version>${spark.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.yandex.clickhouse</groupId>
+                <artifactId>clickhouse-jdbc</artifactId>
+                <version>${clickhouse-jdbc.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-databind</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>net.jpountz.lz4</groupId>
+                        <artifactId>lz4</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!--           <dependency>
+                           <groupId>org.apache.flink</groupId>
+                           <artifactId>flink-table-planner-blink_2.11</artifactId>
+                           <version>${flink.version}</version>
+                       </dependency>
+                       <dependency>
+                           <groupId>org.apache.flink</groupId>
+                           <artifactId>flink-table-api-scala-bridge_2.11</artifactId>
+                           <version>${flink.version}</version>
+                       </dependency>
+                       <dependency>
+                           <groupId>org.apache.flink</groupId>
+                           <artifactId>flink-table-common</artifactId>
+                           <version>${flink.version}</version>
+                       </dependency>
+                       &lt;!&ndash;添加 Flink JDBC 以及 Clickhouse JDBC Driver 相关的依赖 &ndash;&gt;
+                       <dependency>
+                           <groupId>org.apache.flink</groupId>
+                           <artifactId>flink-jdbc_2.11</artifactId>
+                           <version>${flink.version}</version>
+                       </dependency>-->
+
+
+            <!-- Flink1.11 后需要 Flink-client包-->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-clients_2.11</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <!--添加 Flink Table API 相关的依赖 -->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-table-planner-blink_2.11</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-table-api-scala-bridge_2.11</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-table-common</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <!--添加 Flink JDBC Connector 以及 Clickhouse JDBC Driver 相关的依赖 -->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-connector-jdbc_2.11</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>

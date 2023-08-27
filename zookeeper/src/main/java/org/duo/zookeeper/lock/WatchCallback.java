@@ -39,7 +39,7 @@ public class WatchCallback extends Stat implements Watcher, AsyncCallback.String
 
     public void unLock() throws InterruptedException, KeeperException {
 
-        zk.delete(pathName,-1);
+        zk.delete(pathName, -1);
     }
 
     @Override
@@ -92,6 +92,13 @@ public class WatchCallback extends Stat implements Watcher, AsyncCallback.String
         // 假设自己排在第一个，也就是第一个创建节点成功的线程，那表示自己第一个抢到锁
         if (i1 == 0) {
             System.out.println(threadName + " i am first ......");
+//            try {
+//                zk.setData("/", threadName.getBytes(), -1);
+//            } catch (KeeperException e) {
+//                e.printStackTrace();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             countDownLatch.countDown();
             // 当自己不是第一个时，监控自己的前一个节点
         } else {

@@ -12,6 +12,7 @@
         <module>redis</module>
         <module>elasticsearch</module>
         <module>clickhouse</module>
+        <module>zookeeper</module>
     </modules>
 
     <name>middleware</name>
@@ -27,6 +28,7 @@
         <elasticsearch.version>7.10.1</elasticsearch.version>
         <elasticsearch.high.version>7.10.1</elasticsearch.high.version>
         <elasticsearch.sniffer.version>7.10.1</elasticsearch.sniffer.version>
+        <zookeeper.version>3.6.3</zookeeper.version>
         <spark.version>2.3.1</spark.version>
         <clickhouse-jdbc.version>0.2.4</clickhouse-jdbc.version>
         <!--<flink.version>1.9.1</flink.version>-->
@@ -54,6 +56,12 @@
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>elasticsearch-rest-client-sniffer</artifactId>
                 <version>${elasticsearch.sniffer.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.zookeeper</groupId>
+                <artifactId>zookeeper</artifactId>
+                <version>${zookeeper.version}</version>
             </dependency>
 
             <dependency>

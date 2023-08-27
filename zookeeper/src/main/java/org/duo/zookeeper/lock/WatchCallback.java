@@ -45,6 +45,8 @@ public class WatchCallback extends Stat implements Watcher, AsyncCallback.String
     @Override
     public void process(WatchedEvent watchedEvent) {
 
+        // 如果持有锁的节点释放了锁，其实只有监控它的节点收到回调事件
+        // 如果有节点掉了，也会造成它后面监控它的节点收到通知，从而让它后面的节点去watch宕机的节点的前面的节点
         switch (watchedEvent.getType()) {
             case None:
                 break;
